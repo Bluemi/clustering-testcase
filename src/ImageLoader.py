@@ -14,8 +14,10 @@ class ImageLoader:
 
     def load_image(self):
         path = os.path.join('images', self.image_paths[self.image_index])
+        print(f'path: {path}')
         # noinspection PyTypeChecker
-        return np.array(Image.open(path), dtype=np.int32)
+        image = np.array(Image.open(path), dtype=np.int32)[..., :3]
+        return np.moveaxis(image, [0, 1], [1, 0])
 
     def next_image(self):
         self.image_index = (self.image_index + 1) % len(self.image_paths)

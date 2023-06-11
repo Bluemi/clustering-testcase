@@ -1,7 +1,7 @@
 from typing import Optional
 
 import numpy as np
-from pygame import Surface, Rect, draw, Color
+from pygame import Surface, Rect, draw, Color, transform, surfarray
 
 from utils import BLACK, gray
 
@@ -42,4 +42,9 @@ def render_2d_points(screen: Surface, points: np.ndarray, centers, c_points):
 
 
 def render_image(screen: Surface, points, centers, c_points):
-    raise NotImplemented('render image not implemented yet')
+    render_rect = Rect(10, 10, 600, 600)
+
+    render_points = c_points if c_points is not None else points
+    pygame_image = surfarray.make_surface(render_points)
+    scaled_image = transform.scale(pygame_image, render_rect.size)
+    screen.blit(scaled_image, render_rect)
