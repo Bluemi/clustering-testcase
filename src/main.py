@@ -32,6 +32,11 @@ def main():
         for event in events + pg.event.get():
             controller.handle_event(event)
 
+        if controller.new_points:
+            points = distribution.generate_points()
+            centers, clustered_points = algorithm.cluster(points)
+            controller.new_points = False
+
         if controller.show_original:
             render(screen, points)
         else:
