@@ -97,12 +97,10 @@ class Model:
                 self.num_chunks_index = min(len(NUM_CHUNKS)-1, self.num_chunks_index+1)
                 self.algorithm = self.build_algorithm()
                 self.cluster()
-                print(f'setting {NUM_CHUNKS[self.num_chunks_index]} chunks and used {self.centers.shape[0]}')
             elif event.key == 45:  # -
                 self.num_chunks_index = max(0, self.num_chunks_index - 1)
                 self.algorithm = self.build_algorithm()
                 self.cluster()
-                print(f'setting {NUM_CHUNKS[self.num_chunks_index]} chunks and used {self.centers.shape[0]}')
             elif event.key == 27:
                 self.running = False
             else:
