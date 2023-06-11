@@ -17,10 +17,8 @@ def main():
     screen = pg.display.set_mode(DEFAULT_SCREEN_SIZE)
     controller = Controller()
 
-    num_points = 1000
     # distribution = distributions.UniformDistribution(num_points, 2)
-    distribution = distributions.CenteredDistribution(5, num_points, 2, seed=0)
-    points = distribution.generate_points()
+    points = controller.distribution.generate_points()
 
     algorithm = LinearQuantization(5**2)
     centers, clustered_points = algorithm.cluster(points)
@@ -33,7 +31,7 @@ def main():
             controller.handle_event(event)
 
         if controller.new_points:
-            points = distribution.generate_points()
+            points = controller.distribution.generate_points()
             centers, clustered_points = algorithm.cluster(points)
             controller.new_points = False
 
