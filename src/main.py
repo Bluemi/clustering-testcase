@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import time
 
 import pygame as pg
 import numpy as np
@@ -29,6 +29,7 @@ class Model:
         self.algorithm_index = 0
         self.algorithm = self.build_algorithm()
         self.error = None
+        self.calculation_time = 0
 
         self.show_2d = True
         # distribution 2d
@@ -81,14 +82,20 @@ class Model:
 
     def cluster(self):
         if len(self.points.shape) == 2:
+            t1 = time.time()
             self.centers, self.clustered_points = self.algorithm.cluster(self.points)
             self.error = np.mean(np.linalg.norm(self.points - self.clustered_points, axis=1))
+            t2 = time.time()
+            self.calculation_time = t2 - t1
         else:
             old_shape = self.points.shape
             assert old_shape[-1] == 3
             points = self.points.reshape(-1, 3)
+            t1 = time.time()
             self.centers, clustered_points = self.algorithm.cluster(points)
             self.error = np.mean(np.linalg.norm(points - clustered_points, axis=1))
+            t2 = time.time()
+            self.calculation_time = t2 - t1
             self.clustered_points = clustered_points.reshape(old_shape)
 
     def handle_event(self, event: pg.event.Event):
@@ -144,11 +151,11 @@ class Model:
             else:
                 source_name = self.image_loader.image_paths[self.image_loader.image_index]
             if self.show_cluster:
-                render(self.screen, self.points, self.algorithm.name(), source_name,
-                       NUM_CHUNKS[self.num_chunks_index], self.error, self.centers, self.clustered_points)
+                render(self.screen, self.points, self.algorithm.name(), source_name, NUM_CHUNKS[self.num_chunks_index],
+                       self.error, self.calculation_time, self.centers, self.clustered_points)
             else:
                 render(self.screen, self.points, self.algorithm.name(), source_name,
-                       NUM_CHUNKS[self.num_chunks_index], self.error)
+                       NUM_CHUNKS[self.num_chunks_index], self.error, self.calculation_time)
             pg.display.flip()
 
         pg.quit()

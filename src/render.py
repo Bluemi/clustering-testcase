@@ -6,7 +6,7 @@ from pygame import Surface, Rect, draw, Color, transform, surfarray, font as pg_
 from utils import BLACK, gray
 
 
-def render(screen: Surface, points: np.ndarray, algorithm_name: str, distribution_name, num_chunks, error,
+def render(screen: Surface, points: np.ndarray, algorithm_name: str, distribution_name, num_chunks, error, calc_time,
            centers: Optional[np.ndarray] = None, clustered_points: Optional[np.ndarray] = None):
     screen.fill(BLACK)
     if points.shape[-1] == 2:
@@ -20,7 +20,7 @@ def render(screen: Surface, points: np.ndarray, algorithm_name: str, distributio
     else:
         num_chunks_used = str(centers.shape[0])
 
-    render_stats(screen, algorithm_name, distribution_name, num_chunks, num_chunks_used, error)
+    render_stats(screen, algorithm_name, distribution_name, num_chunks, num_chunks_used, error, calc_time)
 
 
 def render_2d_points(screen: Surface, points: np.ndarray, centers, c_points):
@@ -78,7 +78,7 @@ def create_image_with_colors(colors: np.ndarray):
     return np.concatenate(color_images, axis=0)
 
 
-def render_stats(screen, algorith_name, distribution_name, num_chunks, num_chunks_used, error):
+def render_stats(screen, algorith_name, distribution_name, num_chunks, num_chunks_used, error, calc_time):
     font = pg_font.Font(pg_font.get_default_font(), 18)
     algorithm_font = font.render('Algorithm: ' + algorith_name, True, gray(220))
     screen.blit(algorithm_font, Rect(840, 30, 200, 200))
@@ -98,3 +98,6 @@ def render_stats(screen, algorith_name, distribution_name, num_chunks, num_chunk
     distribution_font = font.render(text, True, gray(220))
     screen.blit(distribution_font, Rect(840, 90, 200, 200))
 
+    text = f'Calculation Time: {calc_time:.3f} sec'
+    calc_time_font = font.render(text, True, gray(220))
+    screen.blit(calc_time_font, Rect(840, 110, 200, 200))
