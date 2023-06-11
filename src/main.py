@@ -34,7 +34,7 @@ class Model:
         self.image_loader = ImageLoader()
 
     def build_distribution_2d(self):
-        self.distribution_2d = DISTRIBUTIONS[self.current_distribution_2d_index](num_points=100, num_dims=2, seed=0)
+        self.distribution_2d = DISTRIBUTIONS[self.current_distribution_2d_index](num_points=400, num_dims=2, seed=0)
 
     def next_distribution(self):
         if self.show_2d:
