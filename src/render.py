@@ -12,7 +12,7 @@ def render(screen: Surface, points: np.ndarray, centers: Optional[np.ndarray] = 
     if points.shape[-1] == 2:
         render_2d_points(screen, points, centers, clustered_points)
     elif points.shape[-1] == 3:
-        render_image(points)
+        render_image(screen, points, centers, clustered_points)
 
 
 def render_2d_points(screen: Surface, points: np.ndarray, centers, c_points):
@@ -41,5 +41,5 @@ def render_2d_points(screen: Surface, points: np.ndarray, centers, c_points):
             draw.circle(screen, color, r_point, 2)
 
 
-def render_image(points):
-    pass
+def render_image(screen: Surface, points, centers, c_points):
+    raise NotImplemented('render image not implemented yet')
