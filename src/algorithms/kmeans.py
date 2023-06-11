@@ -11,7 +11,7 @@ class KMeans(Algorithm):
 
     def cluster(self, points: np.ndarray):
         whitened_points = scipy.cluster.vq.whiten(points)
-        centers_whitened = kmeans(whitened_points, self.num_chunks, iter=10)[0]
+        centers_whitened = kmeans(whitened_points, self.num_chunks, iter=5)[0]
         centers = centers_whitened * np.std(points, axis=0)  # + np.mean(points, axis=0)
         return centers, cluster_points_by_centers(points, centers)
 
