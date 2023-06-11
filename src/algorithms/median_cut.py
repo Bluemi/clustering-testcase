@@ -18,15 +18,10 @@ class Chunk:
 
     def get_median(self, axis, points):
         median = np.median(points[self.point_indices, axis])
-        # print('point_indices.shape:', self.point_indices.shape, '  median:', median)
         if median - np.min(points[self.point_indices, axis]) < 0.0001:
             median += 0.0001
         elif np.max(points[self.point_indices, axis]) - median < 0.0001:
             median -= 0.0001
-        # print(np.min(points[self.point_indices, axis]))
-            # print(np.max(points[self.point_indices, axis]))
-            # print(points[self.point_indices, axis])
-            # raise Exception('')
         return median
 
     def get_mean(self, points: np.ndarray):
@@ -53,7 +48,6 @@ class MedianCut(Algorithm):
             del chunks[max_chunk_index]
             chunk_result = _split_chunk(max_chunk, max_wrapper[1], points)
             chunks.extend(chunk_result)
-            # print('extended. Chunks.size:', len(chunks), '  chunk_result len:', len(chunk_result))
 
         result_points = np.empty_like(points)
 
@@ -72,7 +66,6 @@ class MedianCut(Algorithm):
 
 
 def get_wrapper(points: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    # print('points.shape:', points.shape)
     return np.min(points, axis=0), np.max(points, axis=0)
 
 
