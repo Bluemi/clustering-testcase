@@ -22,3 +22,10 @@ class ImageLoader:
         self.image_index = (self.image_index + 1) % len(self.image_paths)
         self.image = self.load_image()
         return self.image
+
+    def prev_image(self):
+        self.image_index -= 1
+        if self.image_index < 0:
+            self.image_index = len(self.image_paths) - 1
+        self.image = self.load_image()
+        return self.image

@@ -45,6 +45,12 @@ class Model:
         self.algorithm_index = (self.algorithm_index + 1) % len(ALGORITHMS)
         self.algorithm = self.build_algorithm()
 
+    def prev_algorithm(self):
+        self.algorithm_index = self.algorithm_index - 1
+        if self.algorithm_index < 0:
+            self.algorithm_index = len(ALGORITHMS) - 1
+        self.algorithm = self.build_algorithm()
+
     def build_distribution_2d(self):
         self.distribution_2d = DISTRIBUTIONS[self.current_distribution_2d_index](num_points=400, num_dims=2, seed=0)
 
@@ -54,6 +60,15 @@ class Model:
             self.build_distribution_2d()
         else:
             self.points = self.image_loader.next_image()
+
+    def prev_distribution(self):
+        if self.show_2d:
+            self.current_distribution_2d_index -= 1
+            if self.current_distribution_2d_index < 0:
+                self.current_distribution_2d_index = len(DISTRIBUTIONS) - 1
+            self.build_distribution_2d()
+        else:
+            self.points = self.image_loader.prev_image()
 
     def generate_and_cluster(self):
         if self.show_2d:
@@ -81,11 +96,17 @@ class Model:
                 self.show_cluster = not self.show_cluster
             elif event.key == 114:  # r
                 self.generate_and_cluster()
-            elif event.key == 110:  # n
+            elif event.unicode == 'n':
                 self.next_distribution()
                 self.generate_and_cluster()
-            elif event.key == 97:  # a
+            elif event.unicode == 'N':
+                self.prev_distribution()
+                self.generate_and_cluster()
+            elif event.unicode == 'a':  # a
                 self.next_algorithm()
+                self.cluster()
+            elif event.unicode == 'A':
+                self.prev_algorithm()
                 self.cluster()
             elif event.key == 50:
                 self.show_2d = True
@@ -104,7 +125,8 @@ class Model:
             elif event.key == 27:
                 self.running = False
             else:
-                print(event)
+                # print(event)
+                pass
 
     def run(self):
         self.generate_and_cluster()
