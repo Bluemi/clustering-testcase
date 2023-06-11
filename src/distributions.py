@@ -63,7 +63,7 @@ class UniformDistribution(Distribution):
 
 
 class CenteredDistribution(Distribution):
-    def __init__(self, num_points: int, num_dims: int, seed: Optional[int] = 42, num_centers: int = 5):
+    def __init__(self, num_points: int, num_dims: int, seed: Optional[int] = 42, num_centers: int = 8):
         super().__init__(num_points, num_dims, seed)
         self.num_centers = num_centers
 
@@ -73,7 +73,7 @@ class CenteredDistribution(Distribution):
             np.random.seed(self.seed)
 
         centers = np.random.normal(size=(self.num_centers, self.num_dims))
-        dists = np.abs(np.random.normal(size=self.num_centers)) * 0.3
+        dists = np.random.random(size=self.num_centers) * 0.2 + 0.05
 
         point_buffer = []
         for center, dist in zip(centers, dists):
