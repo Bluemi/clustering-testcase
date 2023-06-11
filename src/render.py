@@ -41,12 +41,18 @@ def render_2d_points(screen: Surface, points: np.ndarray, centers, c_points):
             draw.circle(screen, color, r_point, 2)
 
 
-def render_image(screen: Surface, points, centers, c_points):
+def render_image(screen: Surface, pixels, centers, clustered_pixels):
     render_rect = Rect(10, 10, 800, 800)
 
-    render_points = c_points if c_points is not None else points
-    pygame_image = surfarray.make_surface(render_points)
-    scaled_image = transform.scale(pygame_image, render_rect.size)
+    render_pixels = clustered_pixels if clustered_pixels is not None else pixels
+    pygame_image = surfarray.make_surface(render_pixels)
+    image_width = render_rect.width
+    image_height = render_rect.height
+    if pygame_image.get_width() > pygame_image.get_height():
+        image_height = render_rect.height * (pygame_image.get_height() / pygame_image.get_width())
+    elif pygame_image.get_height() > pygame_image.get_width():
+        image_width = render_rect.width * (pygame_image.get_width() / pygame_image.get_height())
+    scaled_image = transform.scale(pygame_image, (image_width, image_height))
     screen.blit(scaled_image, render_rect)
 
     if centers is not None:
