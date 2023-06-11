@@ -11,10 +11,16 @@ class Chunk:
         self.can_split = True
 
     def get_wrapper_max(self, points: np.ndarray):
+        """
         start, end = get_wrapper(points[self.point_indices])
         size = end - start
         max_index = np.argmax(size)
         return size[max_index], max_index
+        """
+        my_points = points[self.point_indices]
+        std = np.std(my_points, axis=0)
+        max_index = np.argmax(std)
+        return std[max_index], max_index
 
     def get_median(self, axis, points):
         median = np.median(points[self.point_indices, axis])
