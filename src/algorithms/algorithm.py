@@ -1,6 +1,5 @@
 import abc
 from typing import Tuple
-import time
 
 import numpy as np
 from scipy.spatial.distance import cdist
@@ -34,9 +33,6 @@ def cluster_points_by_centers(points: np.ndarray, centers: np.ndarray):
     """
     # dist mat at index (p, c) contains the distance between point[p] and centers[c].
     # Has shape (len(points), len(centers))
-    points = points.astype(np.float32)
-    centers = centers.astype(np.float32)
-
     dist_mat = cdist(points, centers, metric='sqeuclidean')
 
     # Now we have to get the cluster index for each point with the minimal distance

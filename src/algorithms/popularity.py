@@ -1,5 +1,3 @@
-import time
-
 import numpy as np
 
 from algorithms.algorithm import Algorithm, cluster_points_by_centers
