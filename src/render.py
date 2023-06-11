@@ -48,3 +48,18 @@ def render_image(screen: Surface, points, centers, c_points):
     pygame_image = surfarray.make_surface(render_points)
     scaled_image = transform.scale(pygame_image, render_rect.size)
     screen.blit(scaled_image, render_rect)
+
+    if centers is not None:
+        print(f'centers shape: {centers.shape}')
+        palette = create_image_with_colors(centers)
+        pygame_palette = surfarray.make_surface(palette)
+        screen.blit(pygame_palette, Rect(10, 620, palette.shape[1], palette.shape[0]))
+
+
+def create_image_with_colors(colors: np.ndarray):
+    height = 40
+    width = 600 // colors.shape[0]
+    color_images = []
+    for c in colors:
+        color_images.append(np.full((width, height, 3), c))
+    return np.concatenate(color_images, axis=0)
