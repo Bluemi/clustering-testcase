@@ -20,3 +20,6 @@ class LinearQuantization(Algorithm):
         centered_points = np.floor(points / chunk_size) * chunk_size + chunk_size / 2
 
         return chunk_centers.reshape(-1, num_dims), centered_points
+
+    def name(self) -> str:
+        return 'Linear Quantization'

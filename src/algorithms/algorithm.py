@@ -24,6 +24,10 @@ class Algorithm:
         """
         pass
 
+    @abc.abstractmethod
+    def name(self) -> str:
+        pass
+
 
 def cluster_points_by_centers(points: np.ndarray, centers: np.ndarray):
     """

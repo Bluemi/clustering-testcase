@@ -31,6 +31,9 @@ class QuadOcTree(Algorithm):
 
         return centers, cluster_points_by_centers(points, centers)
 
+    def name(self) -> str:
+        return 'OcTree'
+
 
 def _split_chunk(num_dims: int, parent_chunk_start, parent_chunk_end, points):
     """

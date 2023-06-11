@@ -19,3 +19,6 @@ class Popularity(Algorithm):
         clustered_points = cluster_points_by_centers(points, centers)
 
         return centers, clustered_points
+
+    def name(self) -> str:
+        return 'Popularity'

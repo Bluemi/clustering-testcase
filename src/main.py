@@ -10,7 +10,7 @@ from render import render
 from distributions import DISTRIBUTIONS
 
 
-DEFAULT_SCREEN_SIZE = np.array([1000, 880])
+DEFAULT_SCREEN_SIZE = np.array([1400, 880])
 NUM_CHUNKS = [1, 2, 4, 8, 9, 16, 27, 32, 64, 128, 216, 256, 512, 1024]
 
 
@@ -116,10 +116,16 @@ class Model:
             for event in events + pg.event.get():
                 self.handle_event(event)
 
-            if self.show_cluster:
-                render(self.screen, self.points, self.centers, self.clustered_points)
+            if self.show_2d:
+                source_name = self.distribution_2d.name()
             else:
-                render(self.screen, self.points)
+                source_name = self.image_loader.image_paths[self.image_loader.image_index]
+            if self.show_cluster:
+                render(self.screen, self.points, self.algorithm.name(), source_name,
+                       NUM_CHUNKS[self.num_chunks_index], self.centers, self.clustered_points)
+            else:
+                render(self.screen, self.points, self.algorithm.name(), source_name,
+                       NUM_CHUNKS[self.num_chunks_index])
             pg.display.flip()
 
         pg.quit()

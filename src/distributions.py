@@ -26,6 +26,10 @@ class Distribution:
         """
         pass
 
+    @abc.abstractmethod
+    def name(self) -> str:
+        pass
+
 
 class NormalDistribution(Distribution):
     def __init__(self, num_points: int, num_dims: int, seed: Optional[int] = 42):
@@ -40,6 +44,9 @@ class NormalDistribution(Distribution):
         points = np.random.normal(size=(self.num_points, self.num_dims))
         return normalize_to_color_space(points)
 
+    def name(self) -> str:
+        return 'NormalDistribution'
+
 
 class UniformDistribution(Distribution):
     def __init__(self, num_points: int, num_dims: int, seed: Optional[int] = 42):
@@ -50,6 +57,9 @@ class UniformDistribution(Distribution):
             np.random.seed(self.seed)
         points = np.random.random(size=(self.num_points, self.num_dims))
         return normalize_to_color_space(points)
+
+    def name(self) -> str:
+        return 'UniformDistribution'
 
 
 class CenteredDistribution(Distribution):
@@ -73,6 +83,9 @@ class CenteredDistribution(Distribution):
         points = np.concatenate(point_buffer)[:self.num_points]
 
         return normalize_to_color_space(points)
+
+    def name(self) -> str:
+        return 'Multi Center Normal Distribution'
 
 
 DISTRIBUTIONS = (NormalDistribution, UniformDistribution, CenteredDistribution)
