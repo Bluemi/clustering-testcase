@@ -28,6 +28,7 @@ class Model:
         self.num_chunks_index = 5
         self.algorithm_index = 0
         self.algorithm = self.build_algorithm()
+        self.error = None
 
         self.show_2d = True
         # distribution 2d
@@ -81,20 +82,22 @@ class Model:
     def cluster(self):
         if len(self.points.shape) == 2:
             self.centers, self.clustered_points = self.algorithm.cluster(self.points)
+            self.error = np.mean(np.linalg.norm(self.points - self.clustered_points, axis=1))
         else:
             old_shape = self.points.shape
             assert old_shape[-1] == 3
             points = self.points.reshape(-1, 3)
             self.centers, clustered_points = self.algorithm.cluster(points)
+            self.error = np.mean(np.linalg.norm(points - clustered_points, axis=1))
             self.clustered_points = clustered_points.reshape(old_shape)
 
     def handle_event(self, event: pg.event.Event):
         if event.type == pg.QUIT:
             self.running = False
         elif event.type == pg.KEYDOWN:
-            if event.key == 99:
+            if event.unicode == 'c':
                 self.show_cluster = not self.show_cluster
-            elif event.key == 114:  # r
+            elif event.unicode == 'r':
                 self.generate_and_cluster()
             elif event.unicode == 'n':
                 self.next_distribution()
@@ -102,23 +105,23 @@ class Model:
             elif event.unicode == 'N':
                 self.prev_distribution()
                 self.generate_and_cluster()
-            elif event.unicode == 'a':  # a
+            elif event.unicode == 'a':
                 self.next_algorithm()
                 self.cluster()
             elif event.unicode == 'A':
                 self.prev_algorithm()
                 self.cluster()
-            elif event.key == 50:
+            elif event.unicode == '2':
                 self.show_2d = True
                 self.generate_and_cluster()
-            elif event.key == 51:
+            elif event.unicode == '3':
                 self.show_2d = False
                 self.generate_and_cluster()
-            elif event.key == 43:  # +
+            elif event.unicode == '+':
                 self.num_chunks_index = min(len(NUM_CHUNKS)-1, self.num_chunks_index+1)
                 self.algorithm = self.build_algorithm()
                 self.cluster()
-            elif event.key == 45:  # -
+            elif event.unicode == '-':
                 self.num_chunks_index = max(0, self.num_chunks_index - 1)
                 self.algorithm = self.build_algorithm()
                 self.cluster()
@@ -142,10 +145,10 @@ class Model:
                 source_name = self.image_loader.image_paths[self.image_loader.image_index]
             if self.show_cluster:
                 render(self.screen, self.points, self.algorithm.name(), source_name,
-                       NUM_CHUNKS[self.num_chunks_index], self.centers, self.clustered_points)
+                       NUM_CHUNKS[self.num_chunks_index], self.error, self.centers, self.clustered_points)
             else:
                 render(self.screen, self.points, self.algorithm.name(), source_name,
-                       NUM_CHUNKS[self.num_chunks_index])
+                       NUM_CHUNKS[self.num_chunks_index], self.error)
             pg.display.flip()
 
         pg.quit()
