@@ -10,7 +10,7 @@ from render import render
 from distributions import DISTRIBUTIONS
 
 
-DEFAULT_SCREEN_SIZE = np.array([1280, 720])
+DEFAULT_SCREEN_SIZE = np.array([1000, 1000])
 
 
 class Model:
