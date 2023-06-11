@@ -18,11 +18,14 @@ def main():
     controller = Controller()
 
     num_points = 1000
-    distribution = distributions.GaussDistribution(num_points, 2)
+    # distribution = distributions.UniformDistribution(num_points, 2)
+    distribution = distributions.CenteredDistribution(5, num_points, 2, seed=0)
     points = distribution.generate_points()
 
-    algorithm = LinearQuantization(64)
+    algorithm = LinearQuantization(5**2)
     centers, clustered_points = algorithm.cluster(points)
+    # centers = None
+    # clustered_points = None
 
     while controller.running:
         events = [pg.event.wait()]
