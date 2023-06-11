@@ -32,7 +32,10 @@ def main():
         for event in events + pg.event.get():
             controller.handle_event(event)
 
-        render(screen, points, centers, clustered_points)
+        if controller.show_original:
+            render(screen, points)
+        else:
+            render(screen, points, centers, clustered_points)
         pg.display.flip()
 
     pg.quit()

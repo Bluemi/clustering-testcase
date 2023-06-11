@@ -6,7 +6,8 @@ from pygame import Surface, Rect, draw, Color
 from utils import BLACK, gray
 
 
-def render(screen: Surface, points: np.ndarray, centers: Optional[np.ndarray], clustered_points: Optional[np.ndarray]):
+def render(screen: Surface, points: np.ndarray, centers: Optional[np.ndarray] = None,
+           clustered_points: Optional[np.ndarray] = None):
     screen.fill(BLACK)
     if points.shape[-1] == 2:
         render_2d_points(screen, points, centers, clustered_points)
