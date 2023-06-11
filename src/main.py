@@ -25,7 +25,7 @@ class Model:
         self.clustered_points = None
 
         # algorithm
-        self.num_chunks_index = 8
+        self.num_chunks_index = 5
         self.algorithm_index = 0
         self.algorithm = self.build_algorithm()
 
