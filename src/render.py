@@ -63,7 +63,7 @@ def render_image(screen: Surface, pixels, centers, clustered_pixels):
 
 def create_image_with_colors(colors: np.ndarray):
     height = 40
-    width = 800 // colors.shape[0]
+    width = int(np.ceil(800 // colors.shape[0]))
     color_images = []
     for c in colors:
         color_images.append(np.full((width, height, 3), c))

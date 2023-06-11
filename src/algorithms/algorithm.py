@@ -1,7 +1,9 @@
 import abc
 from typing import Tuple
+import time
 
 import numpy as np
+from scipy.spatial.distance import cdist
 
 
 class Algorithm:
@@ -22,3 +24,26 @@ class Algorithm:
                  clustered_points contains the input points but clustered into the given clusters.
         """
         pass
+
+
+def cluster_points_by_centers(points: np.ndarray, centers: np.ndarray):
+    """
+    Return a list of points with shape [N, D] where each point is the clustered version of a point in points.
+    :param points: A list of points with shape [N, D]
+    :param centers: A list of center points with shape [C, D]
+    """
+    # dist mat at index (p, c) contains the distance between point[p] and centers[c].
+    # Has shape (len(points), len(centers))
+    points = points.astype(np.float32)
+    centers = centers.astype(np.float32)
+
+    dist_mat = cdist(points, centers, metric='sqeuclidean')
+
+    # Now we have to get the cluster index for each point with the minimal distance
+    # cluster_indices is of shape [N,] and contains the index for each point to the closest center point
+    cluster_indices = np.argmin(dist_mat, axis=1)
+
+    # now use the indices to map centers to points
+    clustered_points = centers[cluster_indices]
+
+    return clustered_points

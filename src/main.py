@@ -5,12 +5,13 @@ import pygame as pg
 import numpy as np
 
 from ImageLoader import ImageLoader
-from algorithms.linear_quantisation import LinearQuantization
+from algorithms import ALGORITHMS
 from render import render
 from distributions import DISTRIBUTIONS
 
 
 DEFAULT_SCREEN_SIZE = np.array([1000, 880])
+NUM_CHUNKS = [1, 2, 4, 8, 9, 16, 27, 32, 64, 128, 216, 256, 512, 1024]
 
 
 class Model:
@@ -19,10 +20,14 @@ class Model:
         self.running = True
         self.show_cluster = False
 
-        self.algorithm = LinearQuantization(5**2)
         self.points = None
         self.centers = None
         self.clustered_points = None
+
+        # algorithm
+        self.num_chunks_index = 8
+        self.algorithm_index = 0
+        self.algorithm = self.build_algorithm()
 
         self.show_2d = True
         # distribution 2d
@@ -32,6 +37,13 @@ class Model:
 
         # images
         self.image_loader = ImageLoader()
+
+    def build_algorithm(self):
+        return ALGORITHMS[self.algorithm_index](NUM_CHUNKS[self.num_chunks_index])
+
+    def next_algorithm(self):
+        self.algorithm_index = (self.algorithm_index + 1) % len(ALGORITHMS)
+        self.algorithm = self.build_algorithm()
 
     def build_distribution_2d(self):
         self.distribution_2d = DISTRIBUTIONS[self.current_distribution_2d_index](num_points=400, num_dims=2, seed=0)
@@ -49,6 +61,9 @@ class Model:
         else:
             self.points = self.image_loader.image
 
+        self.cluster()
+
+    def cluster(self):
         if len(self.points.shape) == 2:
             self.centers, self.clustered_points = self.algorithm.cluster(self.points)
         else:
@@ -69,12 +84,25 @@ class Model:
             elif event.key == 110:  # n
                 self.next_distribution()
                 self.generate_and_cluster()
+            elif event.key == 97:  # a
+                self.next_algorithm()
+                self.cluster()
             elif event.key == 50:
                 self.show_2d = True
                 self.generate_and_cluster()
             elif event.key == 51:
                 self.show_2d = False
                 self.generate_and_cluster()
+            elif event.key == 43:  # +
+                self.num_chunks_index = min(len(NUM_CHUNKS)-1, self.num_chunks_index+1)
+                self.algorithm = self.build_algorithm()
+                self.cluster()
+                print(f'setting {NUM_CHUNKS[self.num_chunks_index]} chunks and used {self.centers.shape[0]}')
+            elif event.key == 45:  # -
+                self.num_chunks_index = max(0, self.num_chunks_index - 1)
+                self.algorithm = self.build_algorithm()
+                self.cluster()
+                print(f'setting {NUM_CHUNKS[self.num_chunks_index]} chunks and used {self.centers.shape[0]}')
             elif event.key == 27:
                 self.running = False
             else:
