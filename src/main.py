@@ -88,7 +88,6 @@ class Model:
             for event in events + pg.event.get():
                 self.handle_event(event)
 
-            print(f'points shape: {self.points.shape}')
             if self.show_cluster:
                 render(self.screen, self.points, self.centers, self.clustered_points)
             else:
