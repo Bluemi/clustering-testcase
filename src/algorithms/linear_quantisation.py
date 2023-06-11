@@ -10,7 +10,6 @@ class LinearQuantization(Algorithm):
     def cluster(self, points):
         num_dims = points.shape[-1]
         quantization_per_dim = int(np.power(self.num_chunks, 1/num_dims))
-        # print(f'num_chunks: {self.num_chunks}  num_dims: {num_dims}  quantization: {quantization_per_dim}')
 
         chunk_size = 256 / quantization_per_dim
         chunk_starts = np.linspace(0, 256, quantization_per_dim, endpoint=False)
@@ -19,7 +18,5 @@ class LinearQuantization(Algorithm):
         chunk_centers = np.stack(np.meshgrid(*([chunk_centers] * num_dims), indexing='ij'), axis=num_dims)
 
         centered_points = np.floor(points / chunk_size) * chunk_size + chunk_size / 2
-
-        # print(f'chunk centers:\n{chunk_centers}')
 
         return chunk_centers.reshape(-1, num_dims), centered_points
