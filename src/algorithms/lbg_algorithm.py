@@ -24,4 +24,4 @@ class LBGAlg(Algorithm):
         return centers, cluster_points_by_centers(points, centers)
 
     def name(self) -> str:
-        return 'LBGAlg'
+        return 'Linde-Buzo-Gray'
