@@ -3,9 +3,8 @@ The implementation of this algorithm is used from https://github.com/spencerkent
 """
 import numpy as np
 import scipy.cluster.vq
-from scipy.cluster.vq import kmeans
 
-from algorithms.algorithm import Algorithm, cluster_points_by_centers
+from algorithms.algorithm import Algorithm
 
 
 class GeneralizedLloyd(Algorithm):
