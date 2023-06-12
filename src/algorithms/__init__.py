@@ -1,3 +1,4 @@
+from algorithms.generalized_lloyd import GeneralizedLloyd
 from algorithms.kmeans import KMeans
 from algorithms.linear_quantisation import LinearQuantization
 from algorithms.median_cut import MedianCut
