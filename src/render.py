@@ -35,7 +35,11 @@ def render_2d_points(screen: Surface, points: np.ndarray, centers, c_points):
         render_centers = (centers * ((render_rect.width - 20) / 255) + (render_rect.left + 10)).astype(int)
 
         for r_point, r_clustered, clustered in zip(render_points, render_c_points, c_points):
-            color = Color(127, int(clustered[0]), int(clustered[1]))
+            try:
+                color = Color(127, int(clustered[0]), int(clustered[1]))
+            except ValueError:
+                color = gray(80)
+                print(f'got invalid color argument: {int(clustered[0])} {int(clustered[1])}')
             draw.circle(screen, color + gray(30), r_point, 2)
             draw.line(screen, color - gray(30), r_point, r_clustered)
 
